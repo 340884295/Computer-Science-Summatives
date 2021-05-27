@@ -46,16 +46,16 @@ public class Main {
 			System.out.println("Multiplicand: "); 
 			multiplicand= scanner.nextInt(); // assigning user input to variable
 		
-			if (multiplier < 0 || multiplicand < 0) {
+			if (multiplier < 0 || multiplicand < 0) { // If multiplier and multiplicand variables are negative a line of code is executed
 				System.out.println("Negative values are invalid");
 			
-			} else if (multiplier == 0 && multiplicand == 0) { // If multiplier and multiplicand variables both below zero a chunk of code is executed
+			} else if (multiplier == 0 && multiplicand == 0) { // If multiplier and multiplicand variables both equal zero a line of code is executed
 				System.exit(0);
 				
-			} else if (multiplier == 0 || multiplicand == 0) { // If multiplier or multiplicand variables below zero a chunk of code is executed
+			} else if (multiplier == 0 || multiplicand == 0) { // If multiplier or multiplicand variables equal zero a line of code is executed
 				System.out.println("The product is 0 (When the multiplier or multiplicand is zero, the product is always zero)");
 				
-			} else if (multiplier > 0 && multiplicand > 0) { // If multiplier and multiplicand variables both below zero a chunk of code is executed
+			} else if (multiplier > 0 && multiplicand > 0) { // If multiplier and multiplicand variables both greater than zero a chunk of code is executed
 				
 				while (multiplicand != 0) { // Loops a chunk of code while multiplicand variable isn't zero
 					
