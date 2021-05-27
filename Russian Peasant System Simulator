@@ -71,7 +71,7 @@ public class Main {
 					}
 				}
 				
-				System.out.println(product); // Prints the product of the two values the user entered
+				System.out.println("Product: "+product); // Prints the product of the two values the user entered
 			}
 		}
 		scanner.close(); // Closes the scanner
