@@ -45,6 +45,8 @@ public class Main {
 			multiplier = scanner.nextInt(); // assigning user input to variable
 			System.out.println("Multiplicand: "); 
 			multiplicand= scanner.nextInt(); // assigning user input to variable
+			
+			product = 0; // Sets the value of the product back to zero for when the variable is used in a previous loop
 		
 			if (multiplier < 0 || multiplicand < 0) { // If multiplier and multiplicand variables are negative a line of code is executed
 				System.out.println("Negative values are invalid");
