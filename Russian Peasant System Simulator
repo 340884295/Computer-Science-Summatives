@@ -1,0 +1,79 @@
+/**************************************************************************
+Program Name: Russian Peasant System Simulator
+Assignment Name: Russian Peasant System Summative
+Course Code: ICS3U1-22
+
+Author: Ryan Tan
+
+Program Description: This program uses the Russian Peasant System to find 
+the product of two integers which values are inputted using a scanner. 
+Depending on these values, the program may decide to not use the peasant 
+system as there might be no need. In the case of zero values, any number 
+times zero is zero. In the case of negative values, they aren’t accepted 
+in the Russian Peasant System. Finally, when a user enters two zeros, the 
+program is set to end instead of looping and asking the user for more 
+values as it usually would.
+
+Assumptions and limitations:
+- Expect that the user can read
+- Expect that the user can type
+- Expect that the user enters valid input (integers)
+**************************************************************************/
+
+import java.util.Scanner; // Importing class which allows for user input
+
+public class Main {
+	
+	public static void main(String[] args) {
+		
+		
+		/// INITIALIZING ///
+		int multiplier = 1; // Initialized at 1 for logic purposes
+		int multiplicand = 1;
+		int product = 0;
+		
+		
+		/// INPUT ///
+		Scanner scanner = new Scanner(System.in); // Creating scanner to receive user input
+		System.out.println("Welcome to the Russian Peasant System Program! Please enter two integers as a multiplier and a multiplicand. "
+		+ "\nThis program will use the Russian Peasant System to find the product of those integers. Enter 0 for both values to end the program."); // Greeting the user and explaining the code
+		
+		
+		/// PROCESS ///
+		while (multiplier != 0 || multiplicand != 0) {
+			System.out.println("\nMultiplier: "); 
+			multiplier = scanner.nextInt(); // assigning user input to variable
+			System.out.println("Multiplicand: "); 
+			multiplicand= scanner.nextInt(); // assigning user input to variable
+		
+			if (multiplier < 0 || multiplicand < 0) {
+				System.out.println("Negative values are invalid");
+			
+			} else if (multiplier == 0 && multiplicand == 0) { // If multiplier and multiplicand variables both below zero a chunk of code is executed
+				System.exit(0);
+				
+			} else if (multiplier == 0 || multiplicand == 0) { // If multiplier or multiplicand variables below zero a chunk of code is executed
+				System.out.println("The product is 0 (When the multiplier or multiplicand is zero, the product is always zero)");
+				
+			} else if (multiplier > 0 && multiplicand > 0) { // If multiplier and multiplicand variables both below zero a chunk of code is executed
+				
+				while (multiplicand != 0) { // Loops a chunk of code while multiplicand variable isn't zero
+					
+					if (multiplicand%2 != 0 ) { // If the multiplicand is odd a chunk of code is executed
+						System.out.println(multiplier+" "+multiplicand);
+						product = product + multiplier; // key part of the peasant system that adds the multiplier to a total when the multiplicand is odd
+						multiplier = multiplier*2;
+						multiplicand = (multiplicand-1)/2;
+				
+					} else { // If the multiplicand is even a chunk of code is executed
+						multiplier = multiplier*2;
+						multiplicand = multiplicand/2;
+					}
+				}
+				
+				System.out.println(product); // Prints the product of the two values the user entered
+			}
+		}
+		scanner.close(); // Closes the scanner
+	}
+}
