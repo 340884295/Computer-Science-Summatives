@@ -1,0 +1,142 @@
+/**************************************************************************
+Program Name:  Math Calculations Menu
+Assignment Name:  Method Assignment A - Summative
+Course Code: ICS3U1-22
+
+Author: Ryan Tan
+
+Program Description: This program consists of 4 methods; isPrime, sumOfPrime,
+factorial, and main. The main method is the main part of the program which
+calls on the first 3. The method being called depends on the user's input; 1
+for isPrime, 2 for sumOfPrime, 3 for factorial.
+
+Assumptions and limitations:
+- Expect that the user can read
+- Expect that the user can type
+- Expect that the user enters valid input (positive integers, must be under 
+20 if using factorial method as program can't handle values this large)
+
+Test Data: 18, 19, -11, 1, 2, 0 
+**************************************************************************/
+
+import java.util.Scanner;
+
+public class Methods {
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////	
+	 /* Determines whether a positive integer is a prime number
+	  * 
+	  * @param inputNum - Value to determine if prime
+	  * @return - True if prime
+	  */
+
+	public static boolean isPrime(int inputNum) {
+		
+		// INITIALIZE SECTION //
+		boolean isItPrime = true;
+		
+		// PROCESS SECTION - Determines if inputed number is prime //
+		if (inputNum == 1) {
+			isItPrime = false;
+		}
+		
+		for (int i = 2; i <= inputNum/2; i++) {
+			if ((inputNum % i) == 0) {
+				isItPrime = false;
+			}
+		} 
+		return isItPrime; // Transfers variable to caller of the method
+	} 
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////	
+	 /* Adds up primes up to number given
+	  * 
+	  * @param inputNum - Value to add up to
+	  * @return - Sum of primes, including inputNum if prime
+	  */
+	
+	public static int sumOfPrime(int inputNum) {
+		
+		// INITIALIZE SECTION //
+		int primeSum = 0;
+		boolean isItPrime;
+		
+		// PROCESS SECTION - Adds up all primes leading to inputed number with help of isPrime //
+		for (int i = 2; i <= inputNum; i++) {
+			isItPrime = isPrime(i); // calls isPrime method for each number leading up to inputed number
+			if (isItPrime) {
+				primeSum = primeSum + i;
+			}
+		}
+		return primeSum; // Transfers variable to caller of the method
+	}
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////	
+	 /* Determines factorial of number given
+	  * 
+	  * @param inputNum - Value to find factorial of
+	  * @return - Factorial of number given
+	  */
+	
+	public static int factorial(int inputNum) {
+		
+		// INITIALIZE SECTION //
+		int factorialValue = 1;
+		
+		// PROCESS SECTION - Product of input number and all numbers leading up to it (factorial) //
+		for (int i = 1; i <= inputNum; i++) {
+			factorialValue = factorialValue*i;
+		}
+		return factorialValue; // Transfers variable to caller of the method
+	} 
+		
+////////////////////////////////////////////////////////////////////////////////////////////////////
+	public static void main(String[] args) {
+		
+		// INITIALIZE SECTION //
+		int menuNum = 0;
+		int inputNum = 0;
+		boolean isPrimeAnswer;
+		int primeSumAnswer = 0;
+		int factorialAnswer = 0;
+		
+		Scanner scanner = new Scanner(System.in);
+		System.out.print("This program uses a positive integer to perform a variety of tasks. Please enter a positive integer: ");
+		inputNum = scanner.nextInt(); 
+		
+		// PROCESS SECTION //
+		if (inputNum <= 0) {
+			System.out.print("\n\nERROR, ONLY POSITIVE INTEGERS ARE VALID.");	
+			System.exit(0);
+		}
+		
+		System.out.print("\nThis program can perform 3 tasks: "
+				+ "\n1. Determine if a positive integer is a prime number"
+				+ "\n2. Calculate the sum of all prime numbers up to a positive integer"
+				+ "\n3. Determine the factorial of a positive integer"
+				+ "\n\nSelect which task you would like the program to perfom by entering 1, 2 or 3: ");
+		menuNum = scanner.nextInt();	
+		
+		if (menuNum == 1) { 
+			isPrimeAnswer = isPrime(inputNum); // calls isPrime method if user inputs 1
+			if (isPrimeAnswer) {
+				System.out.print("\n\n"+inputNum + " is a prime number");
+			} else {
+				System.out.print("\n\n"+inputNum + " is not a prime number");
+			}
+			
+		} else if (menuNum == 2) {
+			primeSumAnswer = sumOfPrime(inputNum); // calls sumOfPrime method if user inputs 2
+			System.out.print("\n\nThe sum of primes from 2 to "+inputNum+" is "+primeSumAnswer);
+		
+		} else if (menuNum == 3) { // calls factorial method if user inputs 3
+			factorialAnswer = factorial(inputNum); // calls on factorial method if user inputs 3
+			System.out.print("\n\nThe factorial of "+inputNum+" is "+factorialAnswer);
+			
+		} else { // tells user input is invalid if they don't input 1, 2, or 3
+			System.out.print("\n\nINVALID INPUT, ONLY VALUES 1, 2, AND 3 ARE VALID");
+		}
+		
+		scanner.close();
+	}		
+}
