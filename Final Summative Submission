@@ -1,0 +1,219 @@
+/**************************************************************************
+Program Name: Sporting Event Ticket Assistant
+Assignment Name: Final Summative Submission 
+Instructor: S. Gaffoor
+Course Code: ICS3U1-22
+
+Author: Ryan Tan
+Version: 1.0
+
+Program Description: Prompts user of the program for a password (preset password
+'ICS3U'). Then, asks for the number of people, along with their prespective ages 
+and ticket types. Displays the pricing on the receipt accordingly. It uses multiple
+methods to do this along with storing the respective pricing of user input in arrays 
+(e.g. user enters “13” for age and program will store value $8.25 in array for age 
+pricing). As a side note, the program is extremely user friendly with the use of 
+try/catch anywhere with user input so the user doesn't get frustrated after making 
+a typo (that contains characters the variable can't accept such as String input 
+into an int variable). After finishing the receipt, the user is presented with the 
+choice of ending the program or continuing to create more receipts. 
+
+Assumptions and limitations:
+- Expect that the user enters in the expected data type (double)
+- Expect that the user can read
+- Expect that the user can type
+
+**************************************************************************/
+
+//Importing classes into the program
+import java.util.Scanner;
+
+
+public class Main {
+	
+	
+    public static int inputPersonCount(Scanner scanner) {
+        boolean invalid = true;
+        int peopleCount = 0;
+        while (invalid) {
+            try {
+                System.out.println("\n_____________________________________________________________________________________"
+                				 + "\nEnter the number of people (1 ticket per person): ");
+                peopleCount = scanner.nextInt();
+                if (peopleCount > 0){
+                    invalid = false;
+                }
+            } catch (Exception e) {
+                System.out.println("ERROR INVALID INPUT");
+                scanner.nextLine();  //Skip countermeasure
+            }
+        }
+        return peopleCount;
+    }
+    
+    
+    public static int[] inputAge(Scanner scanner, int peopleCount) {
+        boolean invalid;
+        int[] age = new int[peopleCount];
+        System.out.println("\n---------------------------------------------"
+        				 + "\n|  Child Admission (18 and under):  $8.25   |"
+        				 + "\n|  Adult Admission (18+ to 50):     $12.50  |"
+        				 + "\n|  Senior Admission (50+):          $7.50   |"
+        				 + "\n---------------------------------------------");
+        for (int i = 0; i < peopleCount; i++) {
+            invalid = true;
+            try {
+                while (invalid) {
+                    System.out.println("Enter the age of person " + (i+1) + ": ");
+                    age[i] = scanner.nextInt();
+                    if (age[i] > 0) {
+                        invalid = false;
+                        scanner.nextLine(); //skip
+                    }
+                    else {
+                        System.out.println("INVALID INPUT");
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("INVALID INPUT");
+                i--; //resets index count
+                scanner.nextLine(); //skip
+            }
+        }
+        return age;
+    }
+    
+    
+    public static String[] inputTicketType(Scanner scanner, int peopleCount) {
+        boolean invalid;
+        String[] tType = new String[peopleCount];
+        System.out.println("\n---------------------------------------------"
+        				 + "\n|  Regular Tickets:    no additional cost   |"
+        				 + "\n|  Front Row Tickets:  +$6.00               |"
+        				 + "\n---------------------------------------------");
+        for (int i = 0; i < peopleCount; i++) {
+            invalid = true;
+            try {
+                while (invalid) {
+                    System.out.println("\n"
+                    				 + "Enter the type of ticket for Person " + (i+1) + " (regular or front row): ");
+                    tType[i] = scanner.nextLine().toLowerCase();
+                    if (tType[i].equals("regular") || tType[i].equals("front row")) {
+                        invalid = false;
+                    } else {
+                        System.out.println("Input not accepted. Make sure you choose 'regular' or 'front row' and you spelt correctly\n");
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("INVALID INPUT");
+                i--; //resets index count
+                scanner.nextLine(); //skip
+            }
+        }
+        return tType;
+    }
+    
+    
+    public static double[] priceCalculator(Scanner scanner, int peopleCount) {
+        int[] ages = inputAge(scanner, peopleCount);
+        String[] tTypes = inputTicketType(scanner, peopleCount);
+        double[] prices = new double[ages.length];
+        double[] agePrice = new double[ages.length];
+        double[] typePrice = new double[ages.length];
+        
+        System.out.println("\n-------------------------------------------------------------------");
+        
+        for (int i = 0; i < prices.length; i++) {
+            if (ages[i] > 0 && ages[i] <= 17) {
+                agePrice[i] = 8.25;
+                System.out.println("|  The initial ticket cost for person " + (i+1) + "      $" + agePrice[i] + " (Child Rate)");
+            } else if (ages[i] >= 18 && ages[i] <= 50) {
+                agePrice[i] = 12.50;
+                System.out.println("|  The initial ticket cost for person " + (i+1) + "      $" + agePrice[i] + " (Adult Rate)");
+            } else if (ages[i] >= 51) {
+                agePrice[i] = 7.50;
+                System.out.println("|  The initial ticket cost for person " + (i+1) + "      $" + agePrice[i] + " (Senior Rate)");
+            }
+
+            if (tTypes[i].equals("regular")) {
+                typePrice[i] = 0.00;
+                System.out.println("|  Regular Price for person " + (i+1) + "               +$0.00");
+            } else if(tTypes[i].equals("front row")) {
+                typePrice[i] = 6.00;
+                System.out.println("|  Front Row Price for person " + (i+1) + "             +$" + typePrice[i]);
+            }
+                
+            prices[i] = (typePrice[i] + agePrice[i]);
+            System.out.println("|  The Final Price for Person " + (i+1) + "              $"+ prices[i]
+            				  +"\n|");
+        }    
+        return prices;
+    }
+
+    
+    public static double totalCost(double[] prices) {
+        double totalCost = 0;
+        for (int i = 0; i < prices.length; i++) {
+            totalCost += prices[i];
+        }
+        return totalCost;
+    }
+   
+    
+    public static void main(String[] args) {
+    	String userInput = "null";
+    	String receipt = "null";
+    	int peopleCount = 2;
+    	double[] prices;
+    	boolean run = true;
+    	boolean invalid;
+
+    	Scanner scanner = new Scanner(System.in);
+        
+        System.out.println("========================================"
+        				 + "\n||    WELCOME TO TICKET CALCULATOR    ||"
+        				 + "\n========================================\n");
+        
+        while (!userInput.equals("ICS3U")) {
+            System.out.println("\nPlease enter the password to continue: ");
+            userInput = scanner.nextLine();	
+			if (!userInput.equals("ICS3U")) {
+				System.out.println("INCORRECT PASSWORD. PLEASE TRY AGAIN.\n");
+			}
+		}
+        System.out.println("PASSWORD IS CORRECT!");
+        
+        while (run) {
+        	peopleCount = inputPersonCount(scanner);        	
+        	prices = priceCalculator(scanner, peopleCount);
+        	System.out.println("|                                           _________"
+        					 + "\n|  FINAL TOTAL:                              $" + totalCost(prices)
+        					 + "\n-------------------------------------------------------------------");
+            
+        	invalid = true;
+        	try {
+            	while (invalid) {
+            		System.out.println("\nWould you like to make another receipt (enter yes or no): ");
+            		receipt = scanner.nextLine();
+            		if (receipt.equals("yes")) {
+            			peopleCount = inputPersonCount(scanner);        	
+                    	prices = priceCalculator(scanner, peopleCount);
+                    	System.out.println("|                                           _________"
+                    					 + "\n|  FINAL TOTAL:                              $" + totalCost(prices)
+                    					 + "\n-------------------------------------------------------------------");
+                    	
+            		} else if (receipt.equals("no")) {
+            	        System.out.println("_____________________________________________________________________________________"
+            	    			+ "\n\nExiting Program...");
+            	    	System.exit(0);
+            		} else {
+            			 System.out.println("Input not accepted. Make sure you choose 'yes' or 'no' and you spelt correctly.");
+            		}
+            	}
+            } catch (Exception e) {
+                System.out.println("ERROR INVALID INPUT");
+                scanner.nextLine();  //Skip countermeasure
+            } 
+        }
+    }
+}
