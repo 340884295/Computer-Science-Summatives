@@ -1,0 +1,270 @@
+/**************************************************************************
+Program Name: Sporting Event Ticket Assistant
+Assignment Name: Final Summative Submission 
+Instructor: S. Gaffoor
+Course Code: ICS3U1-22
+
+Author: Ryan Tan
+Version: 3.0
+
+Program Description: Prompts user of the program for a password (preset password
+'ICS3U'). Then, asks for the number of people, along with their prespective ages 
+and ticket types. Displays the pricing on the receipt accordingly. It uses multiple
+methods to do this along with storing the respective pricing of user input in arrays 
+(e.g. user enters “13” for age and program will store value $8.25 in array for age 
+pricing). As a side note, the program is extremely user friendly with the use of 
+try/catch anywhere with user input so the user doesn't get frustrated after making 
+a typo (that contains characters the variable can't accept such as String input 
+into an int variable). After finishing the receipt, the user is presented with the 
+choice of ending the program or continuing to create more receipts. 
+
+Assumptions and limitations:
+- Expect that the user enters in the expected data type (String, int, double, boolean)
+- Expect that the user can read
+- Expect that the user can type
+- User is the ticket agent and knows the password is 'ICS3U'
+
+**************************************************************************/
+
+// Importing classes into the program
+import java.util.Scanner; // accepts user input
+
+
+public class Main {
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/* Determines number of people to process on receipt
+* 
+* @param scanner - Value stored to variable
+* @return - Number of people
+*/
+    public static int inputPersonCount(Scanner scanner) {
+        
+    	// INITIALIZING SECTION //
+    	boolean invalid = true;
+        int peopleCount = 0;
+        
+        // PROCESSING SECTION //
+        while (invalid) { // while variable is true, chunk of code is excecuted
+            try { // executes chunk of code *see catch*
+                System.out.println("\n_____________________________________________________________________________________"
+                				 + "\nEnter the number of people (1 ticket per person): ");
+                
+                peopleCount = scanner.nextInt();
+                
+                if (peopleCount > 0){ // if variable is greater than zero, chunk of code is excecuted
+                    invalid = false;
+                }
+            } catch (Exception e) { // if chunk of code executed by try produces error, executes this chunk of code
+                System.out.println("ERROR INVALID INPUT");
+                scanner.nextLine();  // skip
+            }
+        }
+        return peopleCount; // returns variable to method which calls it
+    }
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/* Determines age of people
+* 
+* @param scanner, peopleCount - Value stored to variable, number of times to prompt for age
+* @return - Age of people
+*/   
+    public static int[] inputAge(Scanner scanner, int peopleCount) {
+        
+    	// INITIALIZING SECTION //
+    	boolean invalid;
+        int[] age = new int[peopleCount];
+        
+        // PROCESSING SECTION //
+        System.out.println("\n---------------------------------------------"
+        				 + "\n|  Child Admission (18 and under):  $8.25   |"
+        				 + "\n|  Adult Admission (18+ to 50):     $12.50  |"
+        				 + "\n|  Senior Admission (50+):          $7.50   |"
+        				 + "\n---------------------------------------------");
+        
+        for (int i = 0; i < peopleCount; i++) { // executes chunk of program until i is less than variable. i starts at zero and increases with each loop
+            invalid = true;
+            try { // executes chunk of code *see catch*
+                while (invalid) { // while variable is true, chunk of code is excecuted
+                    System.out.println("Enter the age of person " + (i+1) + ": ");
+                    age[i] = scanner.nextInt();
+                    if (age[i] > 0) { // if array is greater than zero, chunk of code is excecuted
+                        invalid = false;
+                        scanner.nextLine(); // skip
+                    }
+                    else {
+                        System.out.println("INVALID INPUT");
+                    }
+                }
+            } catch (Exception e) { // if chunk of code executed by try produces error, executes this chunk of code
+                System.out.println("INVALID INPUT");
+                i--; // resets index
+                scanner.nextLine(); //skip
+            }
+        }
+        return age; // returns variable to method which calls it
+    }
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/* Determines type and cost if tickets people desire
+* 
+* @param scanner, peopleCount - Value used in if statements, number of times to prompt for ticket type
+* @return - Type of ticket
+*/    
+    public static String[] inputTicketType(Scanner scanner, int peopleCount) {
+        
+    	// INITIALIZING SECTION //
+    	boolean invalid;
+        String[] tType = new String[peopleCount];
+        
+        // PROCESSING SECTION //
+        System.out.println("\n---------------------------------------------"
+        				 + "\n|  Regular Tickets:    no additional cost   |"
+        				 + "\n|  Front Row Tickets:  +$6.00               |"
+        				 + "\n---------------------------------------------");
+        
+        for (int i = 0; i < peopleCount; i++) { // executes chunk of program until i is less than variable. i starts at zero and increases with each loop
+            invalid = true;
+            try { // executes chunk of code *see catch*
+                while (invalid) { // while variable is true, chunk of code is excecuted
+                    System.out.println("\n"
+                    				 + "Enter the type of ticket for Person " + (i+1) + " (regular or front row): ");
+                    tType[i] = scanner.nextLine().toLowerCase();
+                    if (tType[i].equals("regular") || tType[i].equals("front row")) { // if variable equals one of the two strings, chunk of code is executed
+                        invalid = false;
+                    } else { // if none of requirements above are met (if statements), chunk of code is executed
+                        System.out.println("Input not accepted. Make sure you choose 'regular' or 'front row' and you spelt correctly\n");
+                    }
+                }
+            } catch (Exception e) { // if chunk of code executed by try produces error, executes this chunk of code
+                System.out.println("INVALID INPUT");
+                i--; // resets index
+                scanner.nextLine(); // skip
+            }
+        }
+        return tType; // returns variable to method which calls it
+    } 
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/* Adds and displays costs of admission
+* 
+* @param scanner, peopleCount - Value used to initialize arrays, number of times to run certain chunks of code
+* @return - Cost totals of ticket type and age considered
+*/        
+    public static double[] priceCalculator(Scanner scanner, int peopleCount) {
+        
+    	// INITIALIZING SECTION //
+    	int[] ages = inputAge(scanner, peopleCount);
+        String[] tTypes = inputTicketType(scanner, peopleCount);
+        double[] prices = new double[ages.length];
+        double[] agePrice = new double[ages.length];
+        double[] typePrice = new double[ages.length];
+        
+        // PROCESSING SECTION //
+        System.out.println("\n-------------------------------------------------------------------"); 
+        
+        for (int i = 0; i < prices.length; i++) { // executes chunk of program until i is less than length of an array. i starts at zero and increases with each loop
+            if (ages[i] > 0 && ages[i] <= 17) { // if array value is within certain range, chunk of code is excecuted
+                agePrice[i] = 8.25;
+                System.out.println("|  The initial ticket cost for person " + (i+1) + "      $" + agePrice[i] + " (Child Rate)");
+            } else if (ages[i] >= 18 && ages[i] <= 50) { // (if requirement above isn't met) if array value is within certain range, chunk of code is excecuted
+                agePrice[i] = 12.50;
+                System.out.println("|  The initial ticket cost for person " + (i+1) + "      $" + agePrice[i] + " (Adult Rate)");
+            } else if (ages[i] >= 51) { // (if requirement above isn't met) if array value is within certain range, chunk of code is excecuted
+                agePrice[i] = 7.50;
+                System.out.println("|  The initial ticket cost for person " + (i+1) + "      $" + agePrice[i] + " (Senior Rate)");
+            }
+
+            if (tTypes[i].equals("regular")) { // if array value equals string, chunk of code is excecuted
+                typePrice[i] = 0.00;
+                System.out.println("|  Regular Price for person " + (i+1) + "               +$0.00");
+            } else if(tTypes[i].equals("front row")) { // (if requirement above isn't met) if array value equals string, chunk of code is excecuted
+                typePrice[i] = 6.00;
+                System.out.println("|  Front Row Price for person " + (i+1) + "             +$" + typePrice[i]);
+            }
+                
+            prices[i] = (typePrice[i] + agePrice[i]);
+            System.out.println("|  The Final Price for Person " + (i+1) + "              $"+ prices[i]
+            				  +"\n|");
+        }    
+        return prices; // returns variable to method which calls it
+    }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/* Determines sum of all costs
+* 
+* @param double[] prices - Arrays to have all values taken out of and added to grand total
+* @return - sum of all costs
+*/        
+    public static double totalCost(double[] prices) {
+    	
+    	// INITIALIZING SECTION //
+    	double totalCost = 0;
+    	
+        // PROCESSING SECTION //
+        for (int i = 0; i < prices.length; i++) { // executes chunk of program until i is less than length of prices array. i starts at zero and increases with each loop
+            totalCost += prices[i];
+        }
+        return totalCost; // returns variable to method which calls it
+    }
+   
+////////////////////////////////////////////////////////////////////////////////////////////////////    
+    public static void main(String[] args) {
+    	
+    	// INITIALIZING SECTION //
+    	String userInput = "null";
+    	String receipt = "null";
+    	int peopleCount = 2;
+    	double[] prices;
+    	boolean run = true;
+    	boolean invalid;
+
+        // PROCESSING SECTION //
+        System.out.println("========================================"
+        				 + "\n||    WELCOME TO TICKET CALCULATOR    ||"
+        				 + "\n========================================\n");
+        
+        Scanner scanner = new Scanner(System.in);
+        
+        while (!userInput.equals("ICS3U")) { // while variable equals "ICS3U"
+            System.out.println("\nPlease enter the password to continue: ");
+            userInput = scanner.nextLine();	
+			if (!userInput.equals("ICS3U")) { // if variable equals string, chunk of code is excecuted
+				System.out.println("INCORRECT PASSWORD. PLEASE TRY AGAIN.\n");
+			}
+		}
+        System.out.println("PASSWORD IS CORRECT!");
+        
+        while (run) { // while variable is true, chunk of code is excecuted
+        	peopleCount = inputPersonCount(scanner);        	
+        	prices = priceCalculator(scanner, peopleCount);
+        	System.out.println("|                                           _________"
+        					 + "\n|  FINAL TOTAL:                              $" + totalCost(prices)
+        					 + "\n-------------------------------------------------------------------");
+            
+        	invalid = true;
+        	try { // executes chunk of code *see catch*
+            	while (invalid) { // while variable is true, chunk of code is excecuted
+            		System.out.println("\nWould you like to make another receipt (enter yes or no): ");
+            		receipt = scanner.nextLine();
+            		if (receipt.equals("yes")) { // if variable equals string, chunk of code is excecuted
+            			peopleCount = inputPersonCount(scanner);        	
+                    	prices = priceCalculator(scanner, peopleCount);
+                    	System.out.println("|                                           _________"
+                    					 + "\n|  FINAL TOTAL:                              $" + totalCost(prices)
+                    					 + "\n-------------------------------------------------------------------"); // note: right border of box not added intentionally due to complications with length of output
+            		} else if (receipt.equals("no")) { // if variable equals string, chunk of code is excecuted
+            	        System.out.println("_____________________________________________________________________________________"
+            	    			+ "\n\nExiting Program...");
+            	    	System.exit(0);
+            		} else { // if none of requirements above are met (if statements), chunk of code is executed
+            			 System.out.println("Input not accepted. Make sure you choose 'yes' or 'no' and you spelt correctly.");
+            		}
+            	}
+            } catch (Exception e) { // if chunk of code executed by try produces error, executes this chunk of code
+                System.out.println("ERROR INVALID INPUT");
+                scanner.nextLine(); // skip
+            } 
+        }
+    }
+}
