@@ -5,7 +5,7 @@ Instructor: S. Gaffoor
 Course Code: ICS3U1-22
 
 Author: Ryan Tan
-Version: 1.0
+Version: 2.0
 
 Program Description: Prompts user of the program for a password (preset password
 'ICS3U'). Then, asks for the number of people, along with their prespective ages 
@@ -19,9 +19,10 @@ into an int variable). After finishing the receipt, the user is presented with t
 choice of ending the program or continuing to create more receipts. 
 
 Assumptions and limitations:
-- Expect that the user enters in the expected data type (double)
+- Expect that the user enters in the expected data type (String, int, double, boolean)
 - Expect that the user can read
 - Expect that the user can type
+- User is the ticket agent and knows the password is 'ICS3U'
 
 **************************************************************************/
 
